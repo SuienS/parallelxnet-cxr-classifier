@@ -1,3 +1,4 @@
+import hashlib
 import json
 import sys
 import os
@@ -52,6 +53,7 @@ def get_weighted_loss(x, y):
 app = Flask(__name__)
 jsglue = JSGlue(app)
 model = load_model('models/mimic_then_chex_model.h5', custom_objects={'weighted_loss': get_weighted_loss(1, 1)})
+cur_cxr_hash = 'none'
 
 
 @app.route('/')
@@ -62,16 +64,21 @@ def hello_world():
 @app.route('/predict', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
-        # Get file using post request
-        f = request.files['file']
+        global cur_cxr_hash
+        # Get file from post request through the Web
+        cxr_img_file = request.files['file']
 
-        # Saving file to ./uploads
+        # Generating Hash
+        hashed_filename = hash_cxr(cxr_img_file)
+        print(hashed_filename)
+        cur_cxr_hash = hashed_filename
+        # Saving the CXR image to uploads
         basepath = os.path.dirname(__file__)
         file_path = os.path.join(
-            basepath, 'uploads', secure_filename(f.filename))
-        f.save(file_path)
+            basepath, 'uploads', secure_filename(hashed_filename))
+        cxr_img_file.save(file_path)
 
-        # Make prediction
+        # Prediction calculation
         preds = model_predict(file_path, model)
 
         predictions_dict = {}
@@ -86,11 +93,23 @@ def upload():
     return None
 
 
-@app.route('/get_cxr_detect_img/<cxr_img_id>')
-def get_cxr_detect_img(cxr_img_id):
-    filename = cxr_img_id  # request.args.get('img_id')
-    filepath = 'uploads/' + filename + '.jpg'
+@app.route('/get_cxr_detect_img')
+def get_cxr_detect_img():
+    global cur_cxr_hash
+    filepath = 'uploads/' + cur_cxr_hash
     return send_file(filepath, mimetype='image/jpg')
+
+
+def hash_cxr(cxr_img):
+    # Generating Hash
+    cxr_md5_hash = hashlib.md5()
+    cxr_md5_hash.update(cxr_img.read())
+    cxr_hex_hash = cxr_md5_hash.hexdigest()
+
+    # Back to start of the file
+    cxr_img.seek(0)
+    hashed_filename = cxr_hex_hash + '.' + cxr_img.filename.split('.')[-1]
+    return hashed_filename
 
 
 print("running...")

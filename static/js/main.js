@@ -17,7 +17,7 @@ function cxrResultsDisplayTable(dataJSON) {
 
     Object.keys(dataJSON).forEach(function (key) {
 
-        $(cxrLocalizationPopup(pathology_id, 'view1_frontal')).appendTo('#main-app-body');
+        $(cxrLocalizationPopup(pathology_id)).appendTo('#main-app-body');
 
         let pathology = key;
         let detectionRate = dataJSON[pathology];
@@ -47,8 +47,9 @@ function cxrResultsDisplayTable(dataJSON) {
 }
 
 //used library - http://stewartpark.github.io/Flask-JSGlue/ (PIP Installed)
-function cxrLocalizationPopup(pathology_id, cxr_id) {
-    let urlPath =  Flask.url_for('get_cxr_detect_img', {"cxr_img_id": cxr_id});
+function cxrLocalizationPopup(pathology_id) {
+    let forceRefresh = '?' + Math.floor(Math.random() * 10000)
+    let urlPath =  Flask.url_for('get_cxr_detect_img') + forceRefresh;
     let popupCXRHTML =
         '<div class="modal fade" id="cxrPopup-' + pathology_id + '" role="dialog">\n' +
         '        <div class="modal-dialog">\n' +
@@ -84,7 +85,7 @@ $(document).ready(function () {
         }
     }
 
-    $("#imageUpload").change(function () {
+    $("#imageUpload").on("change",function () {
         $('.image-section').show();
         $('#btn-detect').show();
         detResults.text('');
@@ -93,7 +94,7 @@ $(document).ready(function () {
     });
 
     // Predict
-    $('#btn-detect').click(function () {
+    $('#btn-detect').on("click",function () {
         var form_data = new FormData($('#upload-file')[0]);
 
         // Show loading animation
