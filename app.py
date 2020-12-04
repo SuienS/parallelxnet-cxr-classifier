@@ -93,8 +93,9 @@ def upload():
     return None
 
 
-@app.route('/get_cxr_detect_img')
-def get_cxr_detect_img():
+@app.route('/get_cxr_detect_img/<int:pathology_id>')
+def get_cxr_detect_img(pathology_id):
+    print(pathology_id)
     global cur_cxr_hash
     filepath = 'uploads/' + cur_cxr_hash
     return send_file(filepath, mimetype='image/jpg')

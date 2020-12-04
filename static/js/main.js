@@ -16,8 +16,11 @@ function cxrResultsDisplayTable(dataJSON) {
     let pathology_id = 0
 
     Object.keys(dataJSON).forEach(function (key) {
-
+        let forceRefresh = '?' + Math.floor(Math.random() * 10000)
+        let urlPath =  Flask.url_for('get_cxr_detect_img', {"pathology_id": pathology_id}) + forceRefresh;
         $(cxrLocalizationPopup(pathology_id)).appendTo('#main-app-body');
+        let cxr_popup_img_id = "#cxrPopupImg-" + pathology_id;
+        $(cxr_popup_img_id).attr('src', urlPath);
 
         let pathology = key;
         let detectionRate = dataJSON[pathology];
@@ -48,14 +51,11 @@ function cxrResultsDisplayTable(dataJSON) {
 
 //used library - http://stewartpark.github.io/Flask-JSGlue/ (PIP Installed)
 function cxrLocalizationPopup(pathology_id) {
-    let forceRefresh = '?' + Math.floor(Math.random() * 10000)
-    let urlPath =  Flask.url_for('get_cxr_detect_img') + forceRefresh;
     let popupCXRHTML =
         '<div class="modal fade" id="cxrPopup-' + pathology_id + '" role="dialog">\n' +
         '        <div class="modal-dialog">\n' +
         '            <div class="card">\n' +
-        '                <div class="card-img"><img class="img-fluid" ' +
-        'src="'+ urlPath +'"></div>\n' +
+        '                <div class="card-img"><img id="cxrPopupImg-' + pathology_id + '" class="img-fluid"></div>\n' +
         '                <div class="card-text">\n' +
         '                    <p>Localization Result</p>\n' +
         '                </div>\n' +
