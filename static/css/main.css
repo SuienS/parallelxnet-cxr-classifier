@@ -1,3 +1,15 @@
+/**************************************************************************************
+ * Project     : Chest X-Ray Pathology Detection and Localization using Deep Learning
+ * Author Name : Rammuni Ravidu Suien Silva
+ * UoW No      : 16267097
+ * IIT No      : 2016134
+ * Module      : Final Year Project 20/21
+ * Supervisor  : Mr Pumudu Fernando
+
+ * Prototype    : Web Interface - FrontEnd [Draft: .v01]
+ * University of Westminster, UK || IIT Sri Lanka
+ **************************************************************************************/
+
 .img-preview {
     width: 256px;
     height: 256px;
@@ -12,8 +24,8 @@
 .card {
     border-radius: 3vh;
     margin: auto;
-    max-width: 380px;
-    padding: 7vh 6vh;
+    max-width: 680px;
+    padding: 5vh 4vh;
     align-items: center;
     box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19)
 }
@@ -25,7 +37,7 @@
 }
 
 .card-img {
-    padding: 10px 0;
+    padding: 5px 0;
     width: 100%
 }
 
@@ -37,15 +49,15 @@
 .card-title p {
     color: rgb(29, 226, 226);
     font-weight: 900;
-    font-size: 30px;
+    font-size: 15px;
     margin-bottom: unset
 }
 
 .card-text p {
     color: grey;
-    font-size: 25px;
+    font-size: 16px;
     text-align: center;
-    padding: 3vh 0;
+    padding: 1vh 0;
     font-weight: lighter
 }
 
@@ -64,8 +76,6 @@ input[type="file"] {
 .upload-label{
     display: inline-block;
     padding: 12px 30px;
-    background: #009479;
-    color: #dedede;
     font-size: 1em;
     transition: all .4s;
     cursor: pointer;
@@ -74,18 +84,4 @@ input[type="file"] {
 .upload-label:hover{
     background: #34495E;
     color: #39D2B4;
-}
-
-.loader {
-    border: 8px solid #bfbfbf; /* Light grey */
-    border-top: 8px solid #138add; /* Blue */
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }

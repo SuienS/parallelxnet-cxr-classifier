@@ -1,5 +1,5 @@
-/*************************************************************************
- * Project     : Chest X-Ray Pathology Detection using Deep Learning
+/**************************************************************************************
+ * Project     : Chest X-Ray Pathology Detection and Localization using Deep Learning
  * Author Name : Rammuni Ravidu Suien Silva
  * UoW No      : 16267097
  * IIT No      : 2016134
@@ -8,7 +8,7 @@
 
  * Prototype    : Web Interface - FrontEnd [Draft: .v01]
  * University of Westminster, UK || IIT Sri Lanka
- *************************************************************************/
+ **************************************************************************************/
 
 // consts for DOM objects
 const detResults = $('#result');
@@ -122,7 +122,7 @@ $(document).ready(function () {
 
         // Show loading animation
         $(this).hide();
-        $('.loader').show();
+        $('#loader_ani').show();
 
         // Requesting the detection results by calling api /predict (ajax POST call)
         $.ajax({
@@ -136,7 +136,7 @@ $(document).ready(function () {
             async: true,
             success: function (data) {
                 // Displaying detection results
-                $('.loader').hide();
+                $('#loader_ani').hide();
                 detResults.fadeIn(600);
 
                 // Call for the creation of the detection results table
