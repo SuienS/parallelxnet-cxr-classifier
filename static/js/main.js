@@ -32,25 +32,23 @@ function cxrResultsDisplayTable(dataJSON) {
 
     // Dynamic table creation
     Object.keys(dataJSON).forEach(function (key) {
-        let forceRefresh = '?' + Math.floor(Math.random() * 10000) // Force the browser to refresh image
         let pathology = key;
 
-        // URL generation for the target image
-        //used library - http://stewartpark.github.io/Flask-JSGlue/ (PIP Installed)
-        let urlPath = Flask.url_for('get_cxr_detect_img', {"pathology_id": pathology_id}) + forceRefresh;
         $(cxrLocalizationPopup(pathology_id, pathology)).appendTo('#main-app-body');
 
-        //Setting the image src
-        let cxr_popup_img_id = "#cxrPopupImg-" + pathology_id;
-        $(cxr_popup_img_id).attr('src', urlPath);
-
         let detectionRate = dataJSON[pathology];
+
+        let cxr_popup_id = "#cxrPopup-" + pathology_id;
+        let cxr_popup_id_div = "#cxrPopup-" + pathology_id + "-div";
+        let cxr_popup_img_id = "#cxrPopupImg-" + pathology_id;
+
         // Highlighting high probable diseases
         if (parseFloat(detectionRate) > 0.45) {
-            tableHTML += '<div class="row bg-warning" data-toggle="modal" data-target="#cxrPopup-' + pathology_id + '">';
+            tableHTML += '<div class="row bg-warning" id="' + cxr_popup_id_div + '" data-toggle="modal" data-target="' + cxr_popup_id + '">';
         } else {
-            tableHTML += '<div class="row" data-toggle="modal" data-target="#cxrPopup-' + pathology_id + '">';
+            tableHTML += '<div class="row" id="' + cxr_popup_id_div + '" data-toggle="modal" data-target="' + cxr_popup_id + '">';
         }
+
         tableHTML += '<div class="cell" data-title="Pathology">';
         tableHTML += pathology;
         tableHTML += '</div>';
@@ -58,7 +56,6 @@ function cxrResultsDisplayTable(dataJSON) {
         tableHTML += detectionRate;
         tableHTML += '</div>';
         tableHTML += '</div>';
-
 
         pathology_id += 1;
     });
@@ -76,15 +73,44 @@ function cxrLocalizationPopup(pathology_id, pathology) {
         '<div class="modal fade" id="cxrPopup-' + pathology_id + '" role="dialog">\n' +
         '        <div class="modal-dialog">\n' +
         '            <div class="card">\n' +
-        '                <div class="card-img"><img id="cxrPopupImg-' + pathology_id + '" class="img-fluid"></div>\n' +
+        '                <div class="card-img"><img id="cxrPopupImg-' + pathology_id + '" class="img-fluid cxr-loc-img" ' +
+        '                   alt="Run Localization to view the Localized CXR" ' +
+        '                   style="display: block; margin-left: auto; margin-right: auto;"></div>\n' +
         '                <div class="card-text">\n' +
         '                    <p>Localization Result for:</p>\n' +
-        '                    <p><b>'+pathology+'</b></p>\n' +
+        '                    <p><b>' + pathology + '</b></p>\n' +
         '                </div>\n' +
         '            </div>\n' +
         '        </div>\n' +
         '    </div>';
     return popupCXRHTML
+}
+
+function localizationPathAdd(count_str) {
+    let count = parseInt(count_str);
+    // Dynamic src creation
+    for (let pathology_id = 0; pathology_id < count; pathology_id++) {
+        let cxr_popup_id_div = "#cxrPopup-" + pathology_id + "-div";
+        let cxr_popup_img_id = "#cxrPopupImg-" + pathology_id;
+        $(document).on("click", "#result", function () {
+            let forceRefresh = '?' + Math.floor(Math.random() * 10000); // Force the browser to refresh image
+            // URL generation for the target image
+            // used library - http://stewartpark.github.io/Flask-JSGlue/ (PIP Installed)
+            let urlPath = Flask.url_for('get_cxr_detect_img', {"pathology_id": pathology_id}) + forceRefresh;
+            //Setting the image src
+            // TODO : Optimize this!
+            $(cxr_popup_img_id).attr('src', urlPath);
+        });
+    }
+
+}
+
+function setLoaderIcon() {
+    let elementsSet = document.getElementsByClassName("cxr-loc-img");
+    let loadingURL = Flask.url_for("static", {"filename": "icons/loading_gif.gif"});
+    for (let i = 0; i < elementsSet.length; i++) {
+        elementsSet[i].src = loadingURL;
+    }
 }
 
 // Image upload front-end
@@ -118,7 +144,7 @@ $(document).ready(function () {
 
     // Detection results request
     $('#btn-detect').on("click", function () {
-        var form_data = new FormData($('#upload-file')[0]);
+        let form_data = new FormData($('#upload-file')[0]);
 
         // Show loading animation
         $(this).hide();
@@ -138,10 +164,40 @@ $(document).ready(function () {
                 // Displaying detection results
                 $('#loader_ani').hide();
                 detResults.fadeIn(600);
-
                 // Call for the creation of the detection results table
                 $(cxrResultsDisplayTable(data)).appendTo('#result');
                 console.log('Detection DONE!');
+                localizationPathAdd(data);// TRY PUTTING TWO AJAX CALLS
+                console.log('Path adding DONE!');
+                $('#btn-localize').show();
+            },
+        });
+    });
+
+    $('#btn-localize').on("click", function () {
+        setLoaderIcon();
+        let form_data = new FormData($('#upload-file')[0]);
+        // Show loading animation
+        $(this).hide();
+        $('#loader_ani_localize').show();
+
+        // Initiating the localization
+        $.ajax({
+            type: 'POST',
+            url: '/localize',
+            data: form_data,
+            dataType: 'text',
+            contentType: false,
+            cache: false,
+            processData: false,
+            async: true,
+            success: function (data) {
+                // Displaying detection results
+                $('#loader_ani_localize').hide();
+                detResults.fadeIn(600);
+                localizationPathAdd(data);
+                $('#loader_localized').show();
+                console.log('Path adding DONE!');
             },
         });
     });

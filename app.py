@@ -55,6 +55,11 @@ jsglue = JSGlue(app)
 
 # Detection function
 def model_predict(img_path, model):
+    img = Image.open(img_path)
+    img_crop_box = img.getbbox()
+    cropped = img.crop(img_crop_box)
+    cropped.save(img_path)
+
     img = image.load_img(img_path, target_size=(320, 320))
 
     # Pre-processing of the input data
@@ -250,12 +255,6 @@ def upload():
         # Detection results calculation
         preds = model_predict(file_path, model)
 
-        start = datetime.now()
-        # for i in range(0, len(xray_labels)):
-        create_cxr_localization_heatmap(hashed_filename)
-
-        print(datetime.now() - start)
-
         # Creating the detection results dictionary/ JSON
         predictions_dict = {}
         for i in range(0, len(xray_labels)):
@@ -266,6 +265,27 @@ def upload():
 
         result = json_predictions
         return result
+    return None
+
+
+@app.route('/localize', methods=['GET', 'POST'])
+def localization():
+    if request.method == 'POST':
+        global cur_cxr_hash
+        # Getting image file from post request through the Web
+        cxr_img_file = request.files['file']
+
+        # Generating Hash of the image file
+        hashed_filename = hash_cxr(cxr_img_file)
+        print(hashed_filename)
+        cur_cxr_hash = hashed_filename
+
+        start = datetime.now()
+        # for i in range(0, len(xray_labels)):
+        create_cxr_localization_heatmap(hashed_filename)
+
+        print(datetime.now() - start)
+        return str(len(xray_labels))
     return None
 
 

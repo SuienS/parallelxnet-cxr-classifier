@@ -17,6 +17,9 @@
             </div>
             <div>
                 <button type="button" class="btn btn-primary btn-lg" id="btn-detect">Run Scan</button>
+                <button type="button" class="btn btn-primary btn-lg" id="btn-localize" style="display:none;">Run
+                    Localization
+                </button>
             </div>
         </div>
 
@@ -24,6 +27,14 @@
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             Scanning...
         </button>
+        <button id="loader_ani_localize" class="btn btn-primary btn-lg" type="button" style="display:none;" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Localizing...
+        </button>
+        <button id="loader_localized" class="btn btn-primary btn-lg" type="button" style="display:none;" disabled>
+            Localized
+        </button>
+
 
         <div id="result">
 
