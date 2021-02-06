@@ -238,9 +238,10 @@ def start_web():
 def upload():
     if request.method == 'POST':
         global cur_cxr_hash
+        print(len(request.files))
         # Getting image file from post request through the Web
-        cxr_img_file = request.files['file']
-
+        cxr_img_file = request.files['file_0']  # TODO: Multiple inputs average
+        # TODO: Calculate standard deviation based error for detection rates in multiple CXRs
         # Generating Hash of the image file
         hashed_filename = hash_cxr(cxr_img_file)
         print(hashed_filename)
@@ -268,25 +269,23 @@ def upload():
     return None
 
 
-@app.route('/localize', methods=['GET', 'POST'])
-def localization():
-    if request.method == 'POST':
-        global cur_cxr_hash
-        # Getting image file from post request through the Web
-        cxr_img_file = request.files['file']
+@app.route('/localize')
+def localization():  # TODO: Localization for multiple CXRs (Only for one out of many CXRs)
+    global cur_cxr_hash
+    start = datetime.now()
+    filepath = 'localizations/' + cur_cxr_hash.split('.')[0]
 
-        # Generating Hash of the image file
-        hashed_filename = hash_cxr(cxr_img_file)
-        print(hashed_filename)
-        cur_cxr_hash = hashed_filename
+    if os.path.exists(filepath):
+        file_count = len([name for name in os.listdir(filepath) if os.path.isfile(os.path.join(filepath, name))])
+        if not file_count == len(xray_labels):
+            # TODO : If the localized img is already there no need to re-process
+            create_cxr_localization_heatmap(cur_cxr_hash)
+    else:
+        create_cxr_localization_heatmap(cur_cxr_hash)
 
-        start = datetime.now()
-        # for i in range(0, len(xray_labels)):
-        create_cxr_localization_heatmap(hashed_filename)
-
-        print(datetime.now() - start)
-        return str(len(xray_labels))
-    return None
+    # TODO : Implement 'Force Re-Localization' OR 'file delete' function
+    print(datetime.now() - start)
+    return str(len(xray_labels))
 
 
 # Function for sending the localized CXR image

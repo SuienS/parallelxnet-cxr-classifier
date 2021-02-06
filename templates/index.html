@@ -3,17 +3,43 @@
     <h4 style="text-align:center">Upload CXR Below</h4>
 
     <div id="main-app-body">
-        <form id="upload-file" method="post" enctype="multipart/form-data">
+        <form id="upload-cxr-form" method="post" enctype="multipart/form-data">
             <label for="imageUpload" class="upload-label btn btn-primary btn-lg btn-block">
                 SELECT CXR IMAGE
             </label>
-            <input type="file" name="file" id="imageUpload" accept=".png, .jpg, .jpeg">
+            <input type="file" name="files" class="cxrImgUpload" id="imageUpload" accept=".png, .jpg, .jpeg" multiple/>
         </form>
 
         <div class="image-section" style="display:none;">
-            <div class="img-preview">
-                <div id="imagePreview">
-                </div>
+            <div class="img-preview" style="display:none;">
+                <div class="cxr-preview" id="cxr-preview-0"></div>
+            </div>
+            <div class="img-preview" style="display:none;">
+                <div class="cxr-preview" id="cxr-preview-1"></div>
+            </div>
+            <div class="img-preview" style="display:none;">
+                <div class="cxr-preview" id="cxr-preview-2"></div>
+            </div>
+            <div class="img-preview" style="display:none;">
+                <div class="cxr-preview" id="cxr-preview-3"></div>
+            </div>
+            <div class="img-preview" style="display:none;">
+                <div class="cxr-preview" id="cxr-preview-4"></div>
+            </div>
+            <div class="img-preview" style="display:none;">
+                <div class="cxr-preview" id="cxr-preview-5"></div>
+            </div>
+            <div class="img-preview" style="display:none;">
+                <div class="cxr-preview" id="cxr-preview-6"></div>
+            </div>
+            <div class="img-preview" style="display:none;">
+                <div class="cxr-preview" id="cxr-preview-7"></div>
+            </div>
+            <div class="img-preview" style="display:none;">
+                <div class="cxr-preview" id="cxr-preview-8"></div>
+            </div>
+            <div class="img-preview" style="display:none;">
+                <div class="cxr-preview" id="cxr-preview-9"></div>
             </div>
             <div>
                 <button type="button" class="btn btn-primary btn-lg" id="btn-detect">Run Scan</button>

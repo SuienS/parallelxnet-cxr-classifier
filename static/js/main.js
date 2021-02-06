@@ -12,7 +12,7 @@
 
 // consts for DOM objects
 const detResults = $('#result');
-const cxrPreview = $('#imagePreview');
+const cxrPreview = $('.cxr-preview');
 const popupCXRImg = $('#img-fluid');
 
 
@@ -118,21 +118,33 @@ $(document).ready(function () {
     // Uploaded CXR Preview
     function readURL(input) {
         if (input.files && input.files[0]) {
-            let reader = new FileReader();
-            reader.onload = function (e) {
-                cxrPreview.css('background-image', 'url(' + e.target.result + ')');
-                cxrPreview.hide();
-                cxrPreview.fadeIn(650);
-            }
-            reader.readAsDataURL(input.files[0]);
+            $('.img-preview').each(function (i, row_el) {
+                if (i >= input.files.length || !input.files[i].type.match('image.*')) {
+                    return false;
+                }
+
+                let reader = new FileReader();
+                let cxrPreviewId = "#cxr-preview-" + i;
+
+                $(this).css('display', 'inline-block');
+                reader.onload = function (e) {
+                    $(cxrPreviewId).css('background-image', 'url(' + e.target.result + ')');
+                    $(cxrPreviewId).hide();
+                    $(cxrPreviewId).fadeIn(650);
+                }
+                reader.readAsDataURL(input.files[i]);
+            });
         }
     }
 
     // Image upload button events and animations
     $("#imageUpload").on("change", function () {
         $('.image-section').show();
+        $('.cxr-preview').css('background-image', '');
+        $('.img-preview').hide();
         $('#btn-detect').show();
         $('#loader_localized').hide();
+        $('#btn-localize').hide();
         $('.det-row').off("click")
         $(".cxr-loc-img").attr('src', "");
         detResults.text('');
@@ -142,7 +154,13 @@ $(document).ready(function () {
 
     // Detection results request
     $('#btn-detect').on("click", function () {
-        let form_data = new FormData($('#upload-file')[0]);
+
+        let form_data = new FormData();
+        // Read selected files
+        let totalFiles = document.getElementById('imageUpload').files.length;
+        for (let index = 0; index < totalFiles; index++) {
+            form_data.append("file_" + index, document.getElementById('imageUpload').files[index]);
+        }
 
         // Show loading animation
         $(this).hide();
@@ -167,21 +185,22 @@ $(document).ready(function () {
                 console.log('Detection DONE!');
                 $('#btn-localize').show();
             },
+            error: function () {
+                $('#loader_ani').hide();
+                alert("Couldn't Scan CXR Image");
+            },
         });
     });
 
     $('#btn-localize').on("click", function () {
-        setLoaderIcon();
-        let form_data = new FormData($('#upload-file')[0]);
+        setLoaderIcon(); // TODO: Choice option popup for which img to localize
         // Show loading animation
         $(this).hide();
         $('#loader_ani_localize').show();
 
         // Initiating the localization
         $.ajax({
-            type: 'POST',
             url: '/localize',
-            data: form_data,
             dataType: 'text',
             contentType: false,
             cache: false,
@@ -194,6 +213,10 @@ $(document).ready(function () {
                 localizationPathAdd(data);
                 $('#loader_localized').show();
                 console.log('Path adding DONE!');
+            },
+            error: function () {
+                $('#loader_ani_localize').hide();
+                alert("Couldn't Localize CXR");
             },
         });
     });
