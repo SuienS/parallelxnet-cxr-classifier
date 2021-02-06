@@ -237,29 +237,39 @@ def start_web():
 @app.route('/predict', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
-        global cur_cxr_hash
-        print(len(request.files))
-        # Getting image file from post request through the Web
-        cxr_img_file = request.files['file_0']  # TODO: Multiple inputs average
-        # TODO: Calculate standard deviation based error for detection rates in multiple CXRs
-        # Generating Hash of the image file
-        hashed_filename = hash_cxr(cxr_img_file)
-        print(hashed_filename)
-        cur_cxr_hash = hashed_filename
+        global cur_cxr_hash  # TODO: Fix this variable to work with multiple uploads
+        preds = []
+        file_count = len(request.files)
+        for file_num in range(file_count):
+            # Getting image file from post request through the Web
+            cxr_img_file = request.files['file_' + str(file_num)]  # TODO: Multiple inputs average
+            # TODO: Calculate standard deviation based error for detection rates in multiple CXRs
+            # Generating Hash of the image file
+            hashed_filename = hash_cxr(cxr_img_file)
+            print(hashed_filename)
+            cur_cxr_hash = hashed_filename
 
-        # Saving the CXR image to uploads
-        cxr_img_path = os.path.dirname(__file__)
-        file_path = os.path.join(
-            cxr_img_path, 'uploads', secure_filename(hashed_filename))
-        cxr_img_file.save(file_path)
+            # Saving the CXR image to uploads
+            cxr_img_path = os.path.dirname(__file__)
+            # TODO: Choose from previous uploads feature
+            file_path = os.path.join(
+                cxr_img_path, 'uploads', secure_filename(hashed_filename))
+            cxr_img_file.save(file_path)
 
-        # Detection results calculation
-        preds = model_predict(file_path, model)
+            # Detection results calculation
+            preds.append(np.array(model_predict(file_path, model)[0]).tolist())
 
+        final_preds = np.round(np.multiply(np.mean(preds, axis=0), 100), 2)
+        final_preds_max = np.round(np.multiply(np.max(preds, axis=0), 100), 2)
+        final_preds_min = np.round(np.multiply(np.min(preds, axis=0), 100), 2)
+
+        print(final_preds)
         # Creating the detection results dictionary/ JSON
         predictions_dict = {}
         for i in range(0, len(xray_labels)):
-            predictions_dict[xray_labels[i]] = str(preds[0][i])
+            det_rate_str = str(final_preds[i]) + "% (" + str(final_preds_max[i]) + "% - " + str(
+                final_preds_min[i]) + "%)"
+            predictions_dict[xray_labels[i]] = det_rate_str
 
         # Creating detection result JSON to be sent
         json_predictions = json.dumps(predictions_dict, indent=4)

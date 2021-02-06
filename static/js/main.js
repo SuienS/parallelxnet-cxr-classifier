@@ -42,7 +42,7 @@ function cxrResultsDisplayTable(dataJSON) {
         let cxr_popup_id_span = "#cxrPopup-" + pathology_id + "-span";
 
         // Highlighting high probable diseases
-        if (parseFloat(detectionRate) > 0.45) {
+        if (parseFloat(detectionRate.split("%")[0]) > 45) {
             tableHTML += '<div class="row bg-warning det-row" data-toggle="modal" data-target="' + cxr_popup_id + '">';
         } else {
             tableHTML += '<div class="row det-row" data-toggle="modal" data-target="' + cxr_popup_id + '">';
@@ -51,7 +51,7 @@ function cxrResultsDisplayTable(dataJSON) {
         tableHTML += '<div class="cell" data-title="Pathology">';
         tableHTML += pathology;
         tableHTML += '</div>';
-        tableHTML += '<div class="cell text-dark" data-title="Detection Rate">';
+        tableHTML += '<div class="cell text-dark" data-title="Detection Rate   (Max - Min)">';
         tableHTML += detectionRate;
         tableHTML += '</div>';
         tableHTML += '</div>';
