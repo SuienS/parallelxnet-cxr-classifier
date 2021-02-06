@@ -84,11 +84,11 @@ function cxrLocalizationPopup(pathology_id, pathology) {
         '    </div>';
     return popupCXRHTML
 }
-
+//TODO: SEE  WHAT HAPPENS WHEN YOU LOAD 2ND CXR IMAGE
 function localizationPathAdd(count_str) {
-    let count = parseInt(count_str);
-    // Dynamic src creation
+    let count = parseInt(count_str);// Can be used for error handling
 
+    // Dynamic src creation
     $('.det-row').each(function (i, row_el) {
         let pathology_id = i;
         let cxr_popup_img_id = "#cxrPopupImg-" + pathology_id;
@@ -98,18 +98,14 @@ function localizationPathAdd(count_str) {
             // used library - http://stewartpark.github.io/Flask-JSGlue/ (PIP Installed)
             let urlPath = Flask.url_for('get_cxr_detect_img', {"pathology_id": pathology_id}) + forceRefresh;
             //Setting the image src
-            // TODO : Optimize this!
             $(cxr_popup_img_id).attr('src', urlPath);
         });
     });
 }
 
 function setLoaderIcon() {
-    let elementsSet = document.getElementsByClassName("cxr-loc-img");
     let loadingURL = Flask.url_for("static", {"filename": "icons/loading_gif.gif"});
-    for (let i = 0; i < elementsSet.length; i++) {
-        elementsSet[i].src = loadingURL;
-    }
+    $(".cxr-loc-img").attr('src', loadingURL);
 }
 
 // Image upload front-end
@@ -136,6 +132,9 @@ $(document).ready(function () {
     $("#imageUpload").on("change", function () {
         $('.image-section').show();
         $('#btn-detect').show();
+        $('#loader_localized').hide();
+        $('.det-row').off("click")
+        $(".cxr-loc-img").attr('src', "");
         detResults.text('');
         detResults.hide();
         readURL(this);
@@ -166,8 +165,6 @@ $(document).ready(function () {
                 // Call for the creation of the detection results table
                 $(cxrResultsDisplayTable(data)).appendTo('#result');
                 console.log('Detection DONE!');
-                localizationPathAdd(data);// TRY PUTTING TWO AJAX CALLS
-                console.log('Path adding DONE!');
                 $('#btn-localize').show();
             },
         });
