@@ -39,14 +39,13 @@ function cxrResultsDisplayTable(dataJSON) {
         let detectionRate = dataJSON[pathology];
 
         let cxr_popup_id = "#cxrPopup-" + pathology_id;
-        let cxr_popup_id_div = "#cxrPopup-" + pathology_id + "-div";
-        let cxr_popup_img_id = "#cxrPopupImg-" + pathology_id;
+        let cxr_popup_id_span = "#cxrPopup-" + pathology_id + "-span";
 
         // Highlighting high probable diseases
         if (parseFloat(detectionRate) > 0.45) {
-            tableHTML += '<div class="row bg-warning" id="' + cxr_popup_id_div + '" data-toggle="modal" data-target="' + cxr_popup_id + '">';
+            tableHTML += '<div class="row bg-warning det-row" data-toggle="modal" data-target="' + cxr_popup_id + '">';
         } else {
-            tableHTML += '<div class="row" id="' + cxr_popup_id_div + '" data-toggle="modal" data-target="' + cxr_popup_id + '">';
+            tableHTML += '<div class="row det-row" data-toggle="modal" data-target="' + cxr_popup_id + '">';
         }
 
         tableHTML += '<div class="cell" data-title="Pathology">';
@@ -89,10 +88,11 @@ function cxrLocalizationPopup(pathology_id, pathology) {
 function localizationPathAdd(count_str) {
     let count = parseInt(count_str);
     // Dynamic src creation
-    for (let pathology_id = 0; pathology_id < count; pathology_id++) {
-        let cxr_popup_id_div = "#cxrPopup-" + pathology_id + "-div";
+
+    $('.det-row').each(function (i, row_el) {
+        let pathology_id = i;
         let cxr_popup_img_id = "#cxrPopupImg-" + pathology_id;
-        $(document).on("click", "#result", function () {
+        $(row_el).on("click", function () {
             let forceRefresh = '?' + Math.floor(Math.random() * 10000); // Force the browser to refresh image
             // URL generation for the target image
             // used library - http://stewartpark.github.io/Flask-JSGlue/ (PIP Installed)
@@ -101,8 +101,7 @@ function localizationPathAdd(count_str) {
             // TODO : Optimize this!
             $(cxr_popup_img_id).attr('src', urlPath);
         });
-    }
-
+    });
 }
 
 function setLoaderIcon() {
