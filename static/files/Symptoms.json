@@ -1,0 +1,101 @@
+{
+  "Enlarged Cardiomediastinum": {
+    "Symptoms": [
+      "fsfds sdsf",
+      "fsdfs sfs",
+      "fsdfdsf fsfsd",
+      "fsfsfd sdfsf sfsdd sfd d"
+    ]
+  },
+  "Cardiomegaly": {
+    "Symptoms": [
+      "CCCPfsfds sdsf",
+      "CCCPfsdfs sfs",
+      "Pfsdfdsf fsfsd",
+      "CCC P fsfsfd sdfsf sfsdd sfd d"
+    ]
+  },
+  "Lung Lesion": {
+    "Symptoms": [
+      "fsfds sdsf",
+      "fsdfs sfs",
+      "fsdfdsf fsfsd",
+      "fsfsfd sdfsf sfsdd sfd d"
+    ]
+  },
+  "Lung Opacity": {
+    "Symptoms": [
+      "Pfsfds sdsf",
+      "Pfsdfs sfs",
+      "Pfsdfdsf fsfsd",
+      "P fsfsfd sdfsf sfsdd sfd d"
+    ]
+  },
+  "Edema": {
+    "Symptoms": [
+      "fsfds sdsf",
+      "fsdfs sfs",
+      "fsdfdsf fsfsd",
+      "fsfsfd sdfsf sfsdd sfd d"
+    ]
+  },
+  "Pneumonia": {
+    "Symptoms": [
+      "Pfsfds sdsf",
+      "Pfsdfs sfs",
+      "Pfsdfdsf fsfsd",
+      "P fsfsfd sdfsf sfsdd sfd d"
+    ]
+  },
+  "Consolidation": {
+    "Symptoms": [
+      "Pfsfds sdsf",
+      "Pfsdfs sfs",
+      "Pfsdfdsf fsfsd",
+      "P fsfsfd sdfsf sfsdd sfd d"
+    ]
+  },
+  "Atelectasis": {
+    "Symptoms": [
+      "fsfds sdsf",
+      "fsdfs sfs",
+      "fsdfdsf fsfsd",
+      "fsfsfd sdfsf sfsdd sfd d"
+    ]
+  },
+  "Pneumothorax": {
+    "Symptoms": [
+      "Pfsfds sdsf",
+      "Pfsdfs sfs",
+      "Pfsdfdsf fsfsd",
+      "P fsfsfd sdfsf sfsdd sfd d"
+    ]
+  },
+  "Pleural Effusion": {
+    "Symptoms": [
+      "fsfds sdsf",
+      "fsdfs sfs",
+      "fsdfdsf fsfsd",
+      "fsfsfd sdfsf sfsdd sfd d"
+    ]
+  },
+  "Pleural Other": {
+    "Symptoms": [
+      "Pfsfds sdsf",
+      "Pfsdfs sfs",
+      "Pfsdfdsf fsfsd",
+      "P fsfsfd sdfsf sfsdd sfd d"
+    ]
+  },
+  "Fracture": {
+    "Symptoms": [
+      "FFFfsfds sdsf",
+      "FFF fsdfs sfs",
+      "fsdfdsf fsfsd",
+      "fsfsfd sdfsf sfsdd sfd d"
+    ]
+  },
+  "Support Devices": {
+    "Symptoms": []
+  }
+}

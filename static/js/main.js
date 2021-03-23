@@ -14,13 +14,15 @@
 const detResults = $('#result');
 const cxrPreview = $('.cxr-preview');
 const popupCXRImg = $('#img-fluid');
+let localized = false;
+let symptoms_json;
 
 
 // Displaying the dynamic detection table
 function cxrResultsDisplayTable(dataJSON) {
     let tableHTML = '<div class="limiter">';
     tableHTML += '<div class="container-table100">';
-    tableHTML += '<div class="wrap-table100">';
+    tableHTML += '<div class="wrap-table100" style="margin: 20px auto auto;">';
     tableHTML += '<div class="table">';
     tableHTML += '<div class="row header">' +
         '<div class="cell text-dark">Pathology</div>' +
@@ -35,11 +37,14 @@ function cxrResultsDisplayTable(dataJSON) {
         let pathology = key;
 
         $(cxrLocalizationPopup(pathology_id, pathology)).appendTo('#main-app-body');
+        $(cxrLocalizationPrint(pathology_id, pathology)).appendTo('.loc-result-print');
+
 
         let detectionRate = dataJSON[pathology];
 
         let cxr_popup_id = "#cxrPopup-" + pathology_id;
         let cxr_popup_id_span = "#cxrPopup-" + pathology_id + "-span";
+
 
         // Highlighting high probable diseases
         if (parseFloat(detectionRate.split("%")[0]) > 45) {
@@ -71,36 +76,69 @@ function cxrLocalizationPopup(pathology_id, pathology) {
     let popupCXRHTML =
         '<div class="modal fade" id="cxrPopup-' + pathology_id + '" role="dialog">\n' +
         '        <div class="modal-dialog">\n' +
-        '            <div class="card">\n' +
-        '                <div class="card-img"><img id="cxrPopupImg-' + pathology_id + '" class="img-fluid cxr-loc-img" ' +
-        '                   alt="Run Localization to view the Localized CXR" ' +
-        '                   style="display: block; margin-left: auto; margin-right: auto;"></div>\n' +
-        '                <div class="card-text">\n' +
-        '                    <p>Localization Result for:</p>\n' +
-        '                    <p><b>' + pathology + '</b></p>\n' +
-        '                </div>\n' +
-        '            </div>\n' +
+        cxrLocalizationPrint(pathology_id, pathology) +
         '        </div>\n' +
         '    </div>';
     return popupCXRHTML
 }
+
+function cxrLocalizationPrint(pathology_id, pathology) {
+    let locCXRPrint =
+        '<div class="card print-cxr-card">\n' +
+        '   <div class="card-img"><img id="cxrPopupImg-' + pathology_id +
+        '" class="img-fluid cxr-loc-img cxrPopupImg-' + pathology_id + '" ' +
+        '        alt="Run/Click Localization to view the Localized CXR" ' +
+        '        style="display: block; margin-left: auto; margin-right: auto;"></div>\n' +
+        '   <div class="card-text">\n' +
+        '        <p>Localization Result for:</p>\n' +
+        '        <p><b>' + pathology + '</b></p>\n' +
+        '   </div>\n' + symptomsAdd(pathology, symptoms_json) +
+        '</div>\n';
+    return locCXRPrint
+}
+
+
+function symptomsAdd(pathology, symptoms_json) {
+    console.log(pathology)
+    let symptoms = symptoms_json[pathology]['Symptoms']
+    let listHTML = '  ' +
+        '<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">\n' +
+        '    <div class="d-flex w-100 justify-content-between">\n' +
+        '      <h5 class="mb-1">Possible Symptoms</h5>\n' +
+        '      <small class="text-muted">Confirm the findings</small>\n' +
+        '    </div>';
+
+    for (let i = 0; i < symptoms.length; i++) {
+        listHTML += '<p class="mb-1">' + symptoms[i] + '</p>\n';
+    }
+
+    listHTML += '<small class="text-muted">These are indicative symptoms only!</small>\n' +
+        '</a>'
+    return listHTML;
+}
+
+
 //TODO: SEE  WHAT HAPPENS WHEN YOU LOAD 2ND CXR IMAGE
 function localizationPathAdd(count_str) {
     let count = parseInt(count_str);// Can be used for error handling
-
     // Dynamic src creation
     $('.det-row').each(function (i, row_el) {
         let pathology_id = i;
-        let cxr_popup_img_id = "#cxrPopupImg-" + pathology_id;
+        let cxr_popup_img_class = ".cxrPopupImg-" + pathology_id;
+
         $(row_el).on("click", function () {
-            let forceRefresh = '?' + Math.floor(Math.random() * 10000); // Force the browser to refresh image
-            // URL generation for the target image
-            // used library - http://stewartpark.github.io/Flask-JSGlue/ (PIP Installed)
-            let urlPath = Flask.url_for('get_cxr_detect_img', {"pathology_id": pathology_id}) + forceRefresh;
-            //Setting the image src
-            $(cxr_popup_img_id).attr('src', urlPath);
+            srcAdd(pathology_id, cxr_popup_img_class);
         });
     });
+}
+
+function srcAdd(pathology_id, cxr_popup_img_id) {
+    let forceRefresh = '?' + Math.floor(Math.random() * 10000); // Force the browser to refresh image
+    // URL generation for the target image
+    // used library - http://stewartpark.github.io/Flask-JSGlue/ (PIP Installed)
+    let urlPath = Flask.url_for('get_cxr_detect_img', {"pathology_id": pathology_id}) + forceRefresh;
+    //Setting the image src
+    $(cxr_popup_img_id).attr('src', urlPath);
 }
 
 function setLoaderIcon() {
@@ -143,13 +181,17 @@ $(document).ready(function () {
         $('.cxr-preview').css('background-image', '');
         $('.img-preview').hide();
         $('#btn-detect').show();
+        $('#modelSelect').prop('disabled', false)
         $('#loader_localized').hide();
+        $('#btn-save').hide();
         $('#btn-localize').hide();
         $('.det-row').off("click")
         $(".cxr-loc-img").attr('src', "");
         detResults.text('');
         detResults.hide();
+        localized = false;
         readURL(this);
+
     });
 
     // Detection results request
@@ -161,7 +203,11 @@ $(document).ready(function () {
         for (let index = 0; index < totalFiles; index++) {
             form_data.append("file_" + index, document.getElementById('imageUpload').files[index]);
         }
+        let model_id = $("#modelSelect").val()
 
+        let urlLink = '/predict/' + model_id
+
+        $('#modelSelect').prop('disabled', true)
         // Show loading animation
         $(this).hide();
         $('#loader_ani').show();
@@ -169,7 +215,7 @@ $(document).ready(function () {
         // Requesting the detection results by calling api /predict (ajax POST call)
         $.ajax({
             type: 'POST',
-            url: '/predict',
+            url: urlLink,
             data: form_data,
             dataType: 'json',
             contentType: false,
@@ -179,6 +225,7 @@ $(document).ready(function () {
             success: function (data) {
                 // Displaying detection results
                 $('#loader_ani').hide();
+                $('#btn-save').show();
                 detResults.fadeIn(600);
                 // Call for the creation of the detection results table
                 $(cxrResultsDisplayTable(data)).appendTo('#result');
@@ -190,6 +237,21 @@ $(document).ready(function () {
                 alert("Couldn't Scan CXR Image");
             },
         });
+        $.ajax({
+            type: 'GET',
+            url: '/get_symptoms',
+            dataType: 'json',
+            contentType: false,
+            cache: false,
+            processData: false,
+            async: true,
+            success: function (data) {
+                symptoms_json = data
+            },
+            error: function () {
+                alert("Couldn't Load Symptoms");
+            },
+        });
     });
 
     $('#btn-localize').on("click", function () {
@@ -197,6 +259,8 @@ $(document).ready(function () {
         // Show loading animation
         $(this).hide();
         $('#loader_ani_localize').show();
+        $('#btn-save').prop("disabled", true);
+
 
         // Initiating the localization
         $.ajax({
@@ -208,10 +272,17 @@ $(document).ready(function () {
             async: true,
             success: function (data) {
                 // Displaying detection results
+                localized = true
+                $('.det-row').each(function (i, row_el) {
+                    let pathology_id = i;
+                    let cxr_popup_img_id = ".cxrPopupImg-" + pathology_id;
+                    srcAdd(pathology_id, cxr_popup_img_id);
+                })
                 $('#loader_ani_localize').hide();
                 detResults.fadeIn(600);
                 localizationPathAdd(data);
                 $('#loader_localized').show();
+                $('#btn-save').prop("disabled", false);
                 console.log('Path adding DONE!');
             },
             error: function () {
@@ -219,6 +290,17 @@ $(document).ready(function () {
                 alert("Couldn't Localize CXR");
             },
         });
+    });
+
+    $('#btn-save').on("click", function () {
+        if (localized) {
+            $('.det-row').each(function (i, row_el) {
+                let pathology_id = i;
+                let cxr_popup_img_id = ".cxrPopupImg-" + pathology_id;
+                srcAdd(pathology_id, cxr_popup_img_id);
+            })
+        }
+        window.print(); // TODO : PRINT DELAY
     });
 
 });

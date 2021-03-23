@@ -47,7 +47,7 @@ xray_labels = ["Enlarged Cardiomediastinum",
                "Pleural Other",
                "Fracture",
                "Support Devices"]
-
+# Dependency pip install pyopenssl
 # Flask Configs
 app = Flask(__name__)
 jsglue = JSGlue(app)
@@ -79,9 +79,13 @@ def get_weighted_loss(x, y):
 
 
 # model load
-# model = load_model('models/mimic_then_chex_model.h5', custom_objects={'weighted_loss': get_weighted_loss(1, 1)})
-model = load_model('models/MultiDenseWithResnet-par-mimic.h5',
-                   custom_objects={'weighted_loss': get_weighted_loss(1, 1)})
+models = [
+    load_model('models/MultiDenseWithResnet-par-mimic.h5',
+               custom_objects={'weighted_loss': get_weighted_loss(1, 1)}),
+    load_model('models/mimic_then_chex_model.h5',
+               custom_objects={'weighted_loss': get_weighted_loss(1, 1)})
+]
+model = models[0]
 cur_cxr_hash = 'none'
 
 
@@ -234,9 +238,12 @@ def start_web():
 
 
 # CXR Image upload function
-@app.route('/predict', methods=['GET', 'POST'])
-def upload():
+@app.route('/predict/<int:model_id>', methods=['GET', 'POST'])
+def upload(model_id):
     if request.method == 'POST':
+        print("Model ID", model_id)
+        global model
+        model = models[model_id % len(models)]
         global cur_cxr_hash  # TODO: Fix this variable to work with multiple uploads
         preds = []
         file_count = len(request.files)
@@ -306,6 +313,12 @@ def get_cxr_detect_img(pathology_id):
     localized_image_name = xray_labels[pathology_id] + '-localizedHeatmap-' + cur_cxr_hash
     filepath = 'localizations/' + cur_cxr_hash.split('.')[0] + '/'
     return send_file(filepath + localized_image_name, mimetype='image/jpg')
+
+
+# Function for getting symptoms
+@app.route('/get_symptoms')
+def get_symptoms():
+    return send_file('static/files/Symptoms.json', mimetype='application/json')
 
 
 print("Server Running...")

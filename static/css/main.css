@@ -10,6 +10,36 @@
  * University of Westminster, UK || IIT Sri Lanka
  **************************************************************************************/
 
+.loc-result-print {
+    display: none;
+}
+
+/*Styling for Printing*/
+@media print {
+    * {
+        -webkit-print-color-adjust: exact !important;
+        color-adjust: exact !important;
+    }
+
+    .loc-result-print div {
+        break-inside: avoid;
+    }
+
+    .loc-result-print {
+        display: block;
+    }
+
+    .loc-result-print .print-cxr-card {
+        padding: 5%;
+    }
+
+    .loc-result-print .cxr-loc-img {
+        -ms-transform: scale(1.1); /* for IE 9 */
+        transform: scale(1.1);
+    }
+}
+
+
 .img-preview {
     width: 256px;
     height: 256px;
@@ -30,7 +60,7 @@
     box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19)
 }
 
-@media(max-width:800px) {
+@media (max-width: 800px) {
     .card {
         width: 95vw
     }
@@ -61,7 +91,7 @@
     font-weight: lighter
 }
 
-.img-preview>div {
+.img-preview > div {
     width: 100%;
     height: 100%;
     background-size: 256px 256px;
@@ -73,7 +103,7 @@ input[type="file"] {
     display: none;
 }
 
-.upload-label{
+.upload-label {
     display: inline-block;
     padding: 12px 30px;
     font-size: 1em;
@@ -81,7 +111,7 @@ input[type="file"] {
     cursor: pointer;
 }
 
-.upload-label:hover{
+.upload-label:hover {
     background: #34496E;
     color: #39D2B5;
 }

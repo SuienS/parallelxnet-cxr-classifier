@@ -5,9 +5,19 @@
     <div id="main-app-body">
         <form id="upload-cxr-form" method="post" enctype="multipart/form-data">
             <label for="imageUpload" class="upload-label btn btn-primary btn-lg btn-block">
-                SELECT CXR IMAGE
+                SELECT Chest X-Ray IMAGE
             </label>
-            <input type="file" name="files" class="cxrImgUpload" id="imageUpload" accept=".png, .jpg, .jpeg" multiple/>
+            <div class="form-group">
+                <label for="modelSelect">Model Selection</label>
+                <select class="form-control" id="modelSelect">
+                    <option>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                </select>
+            </div>
+            <input type="file" name="files" class="cxrImgUpload" id="imageUpload" accept="image/png, image/jpeg"
+                   multiple/>
+
         </form>
 
         <div class="image-section" style="display:none;">
@@ -60,11 +70,14 @@
         <button id="loader_localized" class="btn btn-primary btn-lg" type="button" style="display:none;" disabled>
             Localized
         </button>
+        <button id="btn-save" class="btn btn-primary btn-lg" type="button" style="display:none;">
+            Save
+        </button>
 
 
-        <div id="result">
+        <div id="result"></div>
+        <div class="loc-result-print"><h2 align="center"><u>LOCALIZATIONS</u></h2></div>
 
-        </div>
 
     </div>
 
