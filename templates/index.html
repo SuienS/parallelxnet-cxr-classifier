@@ -1,8 +1,24 @@
+<!-------------------------------------------------------------------------------------
+ * Project     : Chest X-Ray Pathology Detection and Localization using Deep Learning
+ * Author Name : Rammuni Ravidu Suien Silva
+ * UoW No      : 16267097
+ * IIT No      : 2016134
+ * Module      : Final Year Project 20/21
+ * Supervisor  : Mr Pumudu Fernando
+
+ * Prototype    : Web Interface - FrontEnd - HTML
+ * File         : UI elements
+ * University of Westminster, UK || IIT Sri Lanka
+-------------------------------------------------------------------------------------->
+
 {% extends "base.html" %} {% block content %}
 
     <h4 style="text-align:center">Upload CXR Below</h4>
 
+    <!--Main body div of the web app-->
     <div id="main-app-body">
+
+        <!--Input form-->
         <form id="upload-cxr-form" method="post" enctype="multipart/form-data">
             <label for="imageUpload" class="upload-label btn btn-primary btn-lg btn-block">
                 SELECT Chest X-Ray IMAGE
@@ -17,9 +33,9 @@
             </div>
             <input type="file" name="files" class="cxrImgUpload" id="imageUpload" accept="image/png, image/jpeg"
                    multiple/>
-
         </form>
 
+        <!---CXR Image Preview Section-->
         <div class="image-section" style="display:none;">
             <div class="img-preview" style="display:none;">
                 <div class="cxr-preview" id="cxr-preview-0"></div>
@@ -74,8 +90,10 @@
             Save
         </button>
 
-
+        <!-- Displaying Results -->
         <div id="result"></div>
+
+        <!---CXR result printing section-->
         <div class="loc-result-print"><h2 align="center"><u>LOCALIZATIONS</u></h2></div>
 
 
