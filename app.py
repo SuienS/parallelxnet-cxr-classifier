@@ -43,16 +43,20 @@ xray_labels = xray_labels_set[0]
 app = Flask(__name__)
 jsglue = JSGlue(app)
 
-# TODO: TTA
 # TODO: USER GUIDE
 
 # model load
-models = [
-    load_model('models/MultiDenseWithResnet-par-mimic.h5',
+models = [[
+    load_model('models/MIMIC/fnlv02-mimic-64.h5',
                custom_objects={'weighted_loss': CXRPrediction.get_weighted_loss(1, 1)}),
-    load_model('models/mimic_then_chex_model.h5',
+    load_model('models/MIMIC/fnlv02-mimic-128.h5',
                custom_objects={'weighted_loss': CXRPrediction.get_weighted_loss(1, 1)})
-]
+], [
+    load_model('models/NIH/fnlv02-nih-64.h5',
+               custom_objects={'weighted_loss': CXRPrediction.get_weighted_loss(1, 1)}),
+    load_model('models/NIH/fnlv02-nih-128.h5',
+               custom_objects={'weighted_loss': CXRPrediction.get_weighted_loss(1, 1)})
+]]
 model = models[0]
 cur_cxr_hash = 'none'
 
@@ -131,9 +135,9 @@ def localization():  # TODO: Localization for multiple CXRs (Only for one out of
         file_count = len([name for name in os.listdir(filepath) if os.path.isfile(os.path.join(filepath, name))])
         if not file_count == len(xray_labels):
             # TODO : If the localized img is already there no need to re-process
-            CXRLocalization.create_cxr_localization_heatmap(cur_cxr_hash, model, xray_labels)
+            CXRLocalization.create_cxr_localization_heatmap(cur_cxr_hash, model[len(model) - 1], xray_labels)
     else:
-        CXRLocalization.create_cxr_localization_heatmap(cur_cxr_hash, model, xray_labels)
+        CXRLocalization.create_cxr_localization_heatmap(cur_cxr_hash, model[len(model) - 1], xray_labels)
 
     # TODO : Implement 'Force Re-Localization' OR 'file delete' function
     print(datetime.now() - start)

@@ -25,12 +25,20 @@ def model_predict(img_path, model):
 
     # Normalizing and centering of the pixel values of the image
     x = preprocess_input(x, mode='tf')
-    x_f = tf.image.flip_left_right(x)
 
     # Test time augmentation
-    preds_0 = model.predict(x)
-    preds_1 = model.predict(x_f)
-    preds = np.add(preds_0, preds_1) / 2
+    x_f = tf.image.flip_left_right(x)
+
+    preds_0, preds_1, preds_0_e, preds_1_e = 0, 0, 0, 0
+    for s_model in model:
+        preds_0 = s_model.predict(x)
+        preds_0_e = np.add(preds_0, preds_0_e)
+        preds_1 = s_model.predict(x_f)
+        preds_1_e = np.add(preds_1, preds_1_e)
+
+    preds_0_e /= len(model)
+    preds_1_e /= len(model)
+    preds = np.add(preds_0_e, preds_1_e) / 2
     return preds
 
 
