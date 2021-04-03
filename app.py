@@ -47,14 +47,14 @@ jsglue = JSGlue(app)
 
 # model load
 models = [[
-    load_model('models/MIMIC/fnlv02-mimic-64.h5',
+    load_model('models/MIMIC/PAR-64-MODEL-MIMIC-FINAL-2.h5',
                custom_objects={'weighted_loss': CXRPrediction.get_weighted_loss(1, 1)}),
-    load_model('models/MIMIC/fnlv02-mimic-128.h5',
+    load_model('models/MIMIC/PAR-128-MODEL-MIMIC-FINAL-2.h5',
                custom_objects={'weighted_loss': CXRPrediction.get_weighted_loss(1, 1)})
 ], [
-    load_model('models/NIH/fnlv02-nih-64.h5',
+    load_model('models/NIH/PAR-64-MODEL-FINAL-NIH-2.h5',
                custom_objects={'weighted_loss': CXRPrediction.get_weighted_loss(1, 1)}),
-    load_model('models/NIH/fnlv02-nih-128.h5',
+    load_model('models/NIH/PAR-128-MODEL-FINAL-NIH-2.h5',
                custom_objects={'weighted_loss': CXRPrediction.get_weighted_loss(1, 1)})
 ]]
 model = models[0]
@@ -73,7 +73,7 @@ def start_web():
     return render_template("index.html")
 
 
-# CXR Image upload function
+# CXR Image upload API
 @app.route('/predict/<int:model_id>', methods=['GET', 'POST'])
 def upload(model_id):
     if request.method == 'POST':
@@ -97,7 +97,6 @@ def upload(model_id):
 
             # Saving the CXR image to uploads
             cxr_img_path = os.path.dirname(__file__)
-            # TODO: Multiple models with different ratios => 32, 64, 128
             file_path = os.path.join(
                 cxr_img_path, 'uploads', secure_filename(hashed_filename))
             cxr_img_file.save(file_path)
@@ -105,6 +104,7 @@ def upload(model_id):
             # Detection results calculation
             preds.append(np.array(CXRPrediction.model_predict(file_path, model)[0]).tolist())
 
+        # Final results calculation considering the results of all the uploaded images
         final_preds = np.round(np.multiply(np.mean(preds, axis=0), 100), 2)
         final_preds_max = np.round(np.multiply(np.max(preds, axis=0), 100), 2)
         final_preds_min = np.round(np.multiply(np.min(preds, axis=0), 100), 2)
@@ -126,7 +126,7 @@ def upload(model_id):
 
 
 @app.route('/localize')
-def localization():  # TODO: Localization for multiple CXRs (Only for one out of many CXRs)
+def localization():  # Localization API
     global cur_cxr_hash
     start = datetime.now()
     filepath = 'localizations/' + cur_cxr_hash.split('.')[0]
@@ -134,14 +134,14 @@ def localization():  # TODO: Localization for multiple CXRs (Only for one out of
     if os.path.exists(filepath):
         file_count = len([name for name in os.listdir(filepath) if os.path.isfile(os.path.join(filepath, name))])
         if not file_count == len(xray_labels):
-            # TODO : If the localized img is already there no need to re-process
+            # If the localized img is already there no need to re-process
             CXRLocalization.create_cxr_localization_heatmap(cur_cxr_hash, model[len(model) - 1], xray_labels)
     else:
+        # Calling Localization Function
         CXRLocalization.create_cxr_localization_heatmap(cur_cxr_hash, model[len(model) - 1], xray_labels)
 
-    # TODO : Implement 'Force Re-Localization' OR 'file delete' function
     print(datetime.now() - start)
-    return str(len(xray_labels))
+    return str(len(xray_labels))  # Returning the localized labels
 
 
 # Function for sending the localized CXR image

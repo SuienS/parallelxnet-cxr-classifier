@@ -66,6 +66,7 @@ jQuery(function () {
 
     // Detection results request
     $('#btn-detect').on("click", function () {
+        $('#imageUpload').prop("disabled", true);
 
         let form_data = new FormData();
         // Read selected files
@@ -102,6 +103,7 @@ jQuery(function () {
                 $(cxrResultsDisplayTable(data)).appendTo('#result');
                 console.log('Detection DONE!');
                 $('#btn-localize').show();
+                $('#imageUpload').prop("disabled", false);
             },
             error: function () {
                 $('#loader_ani').hide();
@@ -129,6 +131,8 @@ jQuery(function () {
     $('#btn-localize').on("click", function () {
         setLoaderIcon();
 
+        $('#imageUpload').prop("disabled", true);
+
         // Show loading animation
         $(this).hide();
         $('#loader_ani_localize').show();
@@ -143,6 +147,8 @@ jQuery(function () {
             processData: false,
             async: true,
             success: function (data) {
+                $('#imageUpload').prop("disabled", false);
+
                 // Displaying detection results
                 localized = true
 

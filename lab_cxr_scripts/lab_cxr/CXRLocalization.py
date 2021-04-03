@@ -14,7 +14,7 @@ from tensorflow.python.keras import Model, Input
 from lab_cxr_scripts.lab_cxr import CXRPrediction
 
 
-# Generating detection heatmap using Grad-CAM technique
+# Localization Algorithm is ADAPTED from blow referenced paper [CODE WRITTEN BY PROJECT AUTHOR]
 # Selvaraju, R.R., Cogswell, M., Das, A., Vedantam, R., Parikh, D., Batra, D., 2020.
 # Grad-CAM: Visual Explanations from Deep Networks via Gradient-based Localization. Int J Comput Vis 128, 336–359.
 # https://doi.org/10.1007/s11263-019-01228-7

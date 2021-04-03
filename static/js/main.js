@@ -47,7 +47,7 @@ function printResults() {
             setTimeout(
                 function () {
                     window.print();
-                }, 1000);
+                }, 3000);
         });
     } else {
         window.print();
