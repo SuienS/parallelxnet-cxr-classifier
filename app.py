@@ -41,6 +41,7 @@ xray_labels = xray_labels_set[0]
 # Dependency pip install pyopenssl
 # Flask Configs
 app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 15 * 1024 * 1024  # Request data limited to 15MB
 jsglue = JSGlue(app)
 
 # TODO: USER GUIDE
