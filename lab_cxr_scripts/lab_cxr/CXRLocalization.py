@@ -111,7 +111,7 @@ def create_cxr_localization_heatmap(cxr_hash, model, xray_labels, last_conv_laye
         superimposed_img = detection_heatmap * 0.4 + cxr_img
         superimposed_img = preprocessing.image.array_to_img(superimposed_img)
 
-        org_cxr_image = Image.open(cxr_img_path)
+        org_cxr_image = Image.open(cxr_img_path).convert('L')
         org_3d_cxr_image = np.tile(np.array(org_cxr_image)[:, :, None], [1, 1, 3])  # 3-Channel original input cxr image
 
         # Save path for the generated heatmap image
