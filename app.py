@@ -41,7 +41,7 @@ xray_labels = xray_labels_set[0]
 # Dependency pip install pyopenssl
 # Flask Configs
 app = Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = 15 * 1024 * 1024  # Request data limited to 15MB
+app.config['MAX_CONTENT_LENGTH'] = 20 * 1024 * 1024  # Request data limited to 20MB
 jsglue = JSGlue(app)
 
 # TODO: USER GUIDE
@@ -88,6 +88,8 @@ def upload(model_id):
         global cur_cxr_hash
         preds = []
         file_count = len(request.files)
+        if file_count > 8:
+            return
         for file_num in range(file_count):
             # Getting image file from post request through the Web
             cxr_img_file = request.files['file_' + str(file_num)]

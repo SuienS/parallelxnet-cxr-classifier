@@ -33,6 +33,7 @@
     <script src="{{ url_for('static', filename='js/bootstrap/popper.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap/select2.min.js') }}"></script>
     <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
     {{ JSGlue.include() }}
@@ -46,6 +47,8 @@
                  class="d-inline-block align-top" alt="logo">
             LAB CXR
         </a>
+        <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target=".bd-example-modal-lg">Info
+        </button>
     </div>
 </nav>
 <div class="container">
