@@ -14,7 +14,7 @@ from tensorflow.python.keras import Model, Input
 from lab_cxr_scripts.lab_cxr import CXRPrediction
 
 
-# Localization Algorithm is ADAPTED from blow referenced paper [CODE WRITTEN BY PROJECT AUTHOR]
+# Localization Algorithm is ADAPTED and MODIFIED from blow referenced paper
 # Selvaraju, R.R., Cogswell, M., Das, A., Vedantam, R., Parikh, D., Batra, D., 2020.
 # Grad-CAM: Visual Explanations from Deep Networks via Gradient-based Localization. Int J Comput Vis 128, 336–359.
 # https://doi.org/10.1007/s11263-019-01228-7
@@ -62,7 +62,7 @@ def generate_detection_heatmap(
         # Calculating the mean across the activation of channels to generate the final detection_heatmap
         detection_heatmap = np.mean(end_conv_layer_output, axis=-1)
 
-        # Normalizing the generated heatmap to 0 - 1 to make it possible for colourized illustration
+        # Normalizing the generated heatmap to 0 - 1 to make it possible for colorized illustration
         detection_heatmap = np.maximum(detection_heatmap, 0) / np.max(detection_heatmap)
         heatmaps.append(detection_heatmap)  # appending to the heatmap list
 

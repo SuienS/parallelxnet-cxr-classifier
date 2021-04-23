@@ -14,9 +14,12 @@ from tensorflow.keras.preprocessing import image
 def model_predict(img_path, model):
     img = Image.open(img_path)
     img_crop_box = img.getbbox()
+
+    # Auto cropping the unwanted areas
     cropped = img.crop(img_crop_box)
     cropped.save(img_path)
 
+    # Resizing image to 320*320
     img = image.load_img(img_path, target_size=(320, 320))
 
     # Pre-processing of the input data
@@ -29,6 +32,7 @@ def model_predict(img_path, model):
     # Test time augmentation
     x_f = tf.image.flip_left_right(x)
 
+    # Averaging the outputs of the multiple models
     preds_0, preds_1, preds_0_e, preds_1_e = 0, 0, 0, 0
     for s_model in model:
         preds_0 = s_model.predict(x)
@@ -38,6 +42,8 @@ def model_predict(img_path, model):
 
     preds_0_e /= len(model)
     preds_1_e /= len(model)
+
+    # Final Result Calculation
     preds = np.add(preds_0_e, preds_1_e) / 2
     return preds
 
