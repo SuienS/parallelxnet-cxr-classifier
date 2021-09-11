@@ -3,6 +3,11 @@
 _This repository contains the code for the prototype application I developed for the Final Research Project of the
 **BSc. (Hons.) in Computer Science** degree at University of Westminster (taught at IIT Sri Lanka)_
 
+## Authors
+
+- [Ravidu Silva](mailto:ravidus.ac@gmail.com)
+- [Pumudu Fernando (Supervisor)](mailto:pumudu.f@iit.ac.lk)
+
 ## Project Introduction
 
 Radiography is a prevalent method of medical diagnosis, especially in humans. Out of the various types of Radiography,
@@ -46,7 +51,7 @@ Following are the main technologies used in this project
    pip install -r requirements.txt
    ```
 
-### 3. Place the model files
+### 3. Model file placement
 
 - Place the model files in their respective folders
 
@@ -56,7 +61,7 @@ Following are the main technologies used in this project
 python3 app.py --host=0.0.0.0 --port=5000 --cert=adhoc --no-reload
 ```
 
-After the execution of this line you can visit you localhost to visit the application
+After the execution of this line you can visit you localhost to use the application
 
 ## Model Accuracy
 
@@ -87,7 +92,8 @@ After the execution of this line you can visit you localhost to visit the applic
 |Pleural Other|0.8067|0.8255|**0.8544**|0.8396|0.8313|0.8504|0.8466|
 |Fracture|0.6613|**0.6944**|0.6894|0.6891|0.6933|0.6810|0.6916|
 |Support Devices|0.8661|0.8994|0.9029|0.9041|0.9039|0.9070|**0.9085**|
-|‘ParallelXNet’ is better at **9 out of 13** labels of the dataset.|
+
+- ‘ParallelXNet’ is better at **9 out of 13** labels of the dataset.
 
 ### Test results on ChestX-ray-14
 
@@ -107,7 +113,8 @@ After the execution of this line you can visit you localhost to visit the applic
 |Infiltration|0.6895|0.7013|0.7031|**0.7047**|0.6984|0.7028|0.7041|
 |Hernia|0.8703|0.8767|0.8847|0.8880|0.8742|0.8905|**0.8911**|
 |Pleural Thickening|0.7742|0.7899|0.7918|**0.7949**|0.7897|0.7889|0.7942|
-|‘ParallelXNet’ is better at **11 out of 14** labels of the dataset.|
+
+- ‘ParallelXNet’ is better at **11 out of 14** labels of the dataset.
 
 ## Acknowledgements
 
