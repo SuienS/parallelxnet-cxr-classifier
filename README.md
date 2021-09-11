@@ -33,6 +33,39 @@ Following are the main technologies used in this project
 
 ## Application Installation
 
+### 1. Pre-requisites
+
+    - Python 3.7+
+    - PIP
+    - CUDA supported GPU with at least 10GB VRAM
+        - CUDA installation
+
+### 2. Install Dependencies
+
+   ```
+   pip install -r requirements.txt
+   ```
+
+### 3. Place the model files
+
+- Place the model files in their respective folders
+
+### 4. Running the Application
+
+```
+python3 app.py --host=0.0.0.0 --port=5000 --cert=adhoc --no-reload
+```
+
+After the execution of this line you can visit you localhost to visit the application
+
 ## Model Accuracy
 
+[TODO]
+
 ## Acknowledgements
+
+We acknowledge below experts for the contribution of their valuable knowledge throughout this project
+
+- Dr. Nilmini Fernando (MBBS, DFM)
+- Dr. Harshana Bandara (MBBS, MD)
+- Dr. Prasantha De Silva (MBBS, MSc)
