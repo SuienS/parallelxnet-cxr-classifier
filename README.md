@@ -1,6 +1,6 @@
 # Parallelized Deep Convolutional Neural Networks for Pathology Detection and Localization in Chest X-Rays
 
-_This repository contains the code for the prototype application I developed as a partial requirements for the
+_This repository contains the code for the prototype application I developed for the Final Research Project of the
 **BSc. (Hons.) in Computer Science** degree at University of Westminster (taught at IIT Sri Lanka)_
 
 ## Project Introduction
