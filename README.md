@@ -116,6 +116,22 @@ After the execution of this line you can visit you localhost to use the applicat
 
 - ‘ParallelXNet’ is better at **11 out of 14** labels of the dataset.
 
+### Additional testing on CIFAR-10
+
+To further confirm the abilities of ParallelXNet, it was tested on a non-medical dataset.
+
+| Model Metric | R-D-Ens | P-Ens |
+| --- | :---: | :---: |
+| Sensitivity | 87.94% | **88.55%** |
+| Specificity | 98.66% | **98.75%** |
+| Precision | 88.00% | **88.57%** |
+| Accuracy | 97.58% | **97.72%** |
+| Balanced Accuracy | 93.30% | **93.64%** |
+| F1-Score | 87.94% | **88.56%** |
+| MCC | 0.8663 | **0.8729** |
+
+- ParallelXNet is better in terms of **all the metrics** considered for CIFAR-10 dataset.
+
 ## Acknowledgements
 
 We acknowledge below experts for the contribution of their valuable knowledge throughout this project
