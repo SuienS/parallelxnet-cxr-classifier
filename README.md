@@ -77,7 +77,7 @@ After the execution of this line you can visit you localhost to use the applicat
 
 ### Test results on MIMIC-CXR 2020
 
-|Model \Pathology|R-50v2|D-121|D-169|R-D-Ens|P-64|P-128|P-Ens|
+|Pathology \Model|R-50v2|D-121|D-169|R-D-Ens|P-64|P-128|P-Ens|
 |:--------------:|:------:| :-----:| :-----:| :-----:| :-----:| :-----:| :-----:|
 |Enlarged Cardiom.|0.7026|0.7048|**0.7209**|0.7159|0.7061|0.7076|0.7107|
 |Cardiomegaly|0.7808|0.7807|0.7888|0.7889|0.7921|0.7874|**0.7932**|
