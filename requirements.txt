@@ -1,0 +1,8 @@
+numpy==1.19.4
+Flask==1.1.2
+tensorflow==2.3.1
+Werkzeug==1.0.1
+Pillow==8.0.1
+matplotlib==3.3.3
+Flask-JSGlue==0.3.1
+gunicorn==20.0.4

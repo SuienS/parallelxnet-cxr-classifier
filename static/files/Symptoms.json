@@ -1,0 +1,155 @@
+{
+  "Enlarged Cardiomediastinum": {
+    "Symptoms": [
+      "Breathing problems",
+      "Shortness of breath",
+      "Dizziness",
+      "Irregular heartbeat (arrhythmia)"
+    ]
+  },
+  "Cardiomegaly": {
+    "Symptoms": [
+      "Abdominal bloating",
+      "Abnormal heart rhythms (arrhythmia)",
+      "Chest pain",
+      "Coughing, especially while lying down",
+      "Shortness of breath"
+    ]
+  },
+  "Lung Lesion": {
+    "Symptoms": [
+      "Mild cough",
+      "Shortness of breath",
+      "Blood Coughing"
+    ]
+  },
+  "Lung Opacity": {
+    "Symptoms": [
+      "Coughing thick green or bloody sputum",
+      "Blood Coughing",
+      "Noisy breathing sounds",
+      "Fever",
+      "Fatigue",
+      "Chest Pain"
+    ]
+  },
+  "Edema": {
+    "Symptoms": [
+      "Shortness of breath while being active",
+      "Difficulty of breathing",
+      "Wheezing, Coughing",
+      "Rapid weight gain",
+      "Headaches, Fever"
+    ]
+  },
+  "Pneumonia": {
+    "Symptoms": [
+      "Greenish, yellow or even bloody mucus while coughing",
+      "Fever, Sweating",
+      "Shortness of breath",
+      "Rapid stabbing chest pain",
+      "Nausea, vomiting"
+    ]
+  },
+  "Consolidation": {
+    "Symptoms": [
+      "Coughing up thick green/bloody sputum",
+      "Chest pain",
+      "Fever",
+      "Chest pain"
+    ]
+  },
+  "Atelectasis": {
+    "Symptoms": [
+      "Shortness of breath",
+      "Increased heart rate",
+      "Chest pain, coughing",
+      "Skin and lips turning blue"
+    ]
+  },
+  "Pneumothorax": {
+    "Symptoms": [
+      "Bluish skin",
+      "Chest pain, ache",
+      "Coughing",
+      "Fast breathing, Abnormally high heart rate"
+    ]
+  },
+  "Pleural Effusion": {
+    "Symptoms": [
+      "Shortness of breath",
+      "Dry Cough",
+      "Inability to lie flat"
+    ]
+  },
+  "Pleural Other": {
+    "Symptoms": [
+      "Shortness of breath",
+      "Dry Cough",
+      "[Varies]"
+    ]
+  },
+  "Fracture": {
+    "Symptoms": [
+      "Aches"
+    ]
+  },
+  "Nodule": {
+    "Symptoms": [
+      "Wheezing",
+      "Blood coughing",
+      "Shortness of breath",
+      "Fever, especially when present with pneumonia"
+    ]
+  },
+  "Emphysema": {
+    "Symptoms": [
+      "Frequent coughing or wheezing",
+      "Shortness of breath while in physical activities",
+      "A whistling sound while breathing",
+      "Chest pain"
+    ]
+  },
+  "Fibrosis": {
+    "Symptoms": [
+      "Shortness of breath",
+      "Dry cough",
+      "Fatigue",
+      "Abnormal weight loss",
+      "Joint aches"
+    ]
+  },
+  "Mass": {
+    "Symptoms": [
+      "Chest pain",
+      "Swelling",
+      "Discomfort in chest"
+    ]
+  },
+  "Infiltration": {
+    "Symptoms": [
+      "Shortness of breath",
+      "Chest pain",
+      "Cough, fever"
+    ]
+  },
+  "Hernia": {
+    "Symptoms": [
+      "Intense chest pain",
+      "Bad breath",
+      "Bloating feel",
+      "Fatigue"
+    ]
+  },
+  "Plueral Thickening": {
+    "Symptoms": [
+      "Breathlessness",
+      "Shortness of breath",
+      "Chest pain",
+      "Cough with pain"
+    ]
+  },
+  "Support Devices": {
+    "Symptoms": []
+  }
+}
