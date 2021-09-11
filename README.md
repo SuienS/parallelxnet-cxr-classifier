@@ -35,10 +35,10 @@ Following are the main technologies used in this project
 
 ### 1. Pre-requisites
 
-    - Python 3.7+
-    - PIP
-    - CUDA supported GPU with at least 10GB VRAM
-        - CUDA installation
+- Python 3.7+
+- PIP
+- CUDA supported GPU with at least 10GB VRAM
+  - CUDA installation
 
 ### 2. Install Dependencies
 
