@@ -10,8 +10,7 @@ _This repository contains the code for the prototype application I developed for
 
 ## Publication
 Effective Utilization of Multiple Convolutional Neural Networks for Chest X-Ray Classification - Springer Nature
-
-[https://doi.org/10.1007/s42979-022-01390-9](https://doi.org/10.1007/s42979-022-01390-9)
+- [https://doi.org/10.1007/s42979-022-01390-9](https://doi.org/10.1007/s42979-022-01390-9)
 
 ## Project Introduction
 
