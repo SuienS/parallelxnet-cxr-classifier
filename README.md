@@ -8,6 +8,10 @@ _This repository contains the code for the prototype application I developed for
 - [Ravidu Silva](mailto:ravidus.ac@gmail.com)
 - [Pumudu Fernando (Supervisor)](mailto:pumudu.f@iit.ac.lk)
 
+## Publication
+Effective Utilization of Multiple Convolutional Neural Networks for Chest X-Ray Classification - Springer Nature
+[https://doi.org/10.1007/s42979-022-01390-9](https://doi.org/10.1007/s42979-022-01390-9)
+
 ## Project Introduction
 
 Radiography is a prevalent method of medical diagnosis, especially in humans. Out of the various types of Radiography,
